@@ -3,3 +3,5 @@ instance/
 .venv/
 precon_escalation_league/__pycache__/
 precon_escalation_league/config.py
+__pycache__/
+config.py
