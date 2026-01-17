@@ -1,4 +1,5 @@
 <!doctype html>
+
 <title>{% block title %}{% endblock %} - Precon Escalation League</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
@@ -11,6 +12,7 @@
 </nav>
 <section class="content">
   <header>
+    <meta name="google-site-verification" content="Dg-H5ebqoCPRC4xeY-Wk05vvEUww-VphbZEl08X4uTQ" />
     {% block header %}{% endblock %}
   </header>
   {% for message in get_flashed_messages() %}
