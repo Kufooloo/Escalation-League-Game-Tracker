@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Submit Precon Escalation League Game{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+<form method="POST">
+
+  <!-- Game Info -->
+  <fieldset>
+    <legend>Game Info</legend>
+
+    <label>
+      Round
+      <input type="number" name="round" min="1" required>
+    </label>
+
+    <label>
+      Date
+  <input
+    type="date"
+    name="date"
+    value="{{ today }}"
+    required
+  >    </label>
+  </fieldset>
+
+  <!-- Players -->
+  <section id="players"></section>
+
+<button type="button" id="add-player" class="btn btn-add">
+  Add Player
+</button>
+  <button type="submit">Submit</button>
+
+</form>
+
+<!-- Player template -->
+<template id="player-template">
+  <details open class="player">
+  <summary>
+      Player <span class="player-number"></span>
+      <span class="player-summary"></span>
+  </summary>
+
+
+    <div class="field">
+      <label>Name</label>
+      <input 
+        type="text" 
+        name="__NAME__" required
+        list="names-list"
+        autocomplete="off"
+      >
+    </div>
+
+<div class="autocomplete">
+  <label>Deck</label>
+  <input
+    type="text"
+    name="__DECK__"
+    class="deck-input"
+    autocomplete="off"
+  >
+  <div class="autocomplete-results"></div>
+</div>
+
+<div class="autocomplete">
+  <label>Commander</label>
+  <input
+    type="text"
+    name="__COMMANDER__"
+    class="commander-input"
+    autocomplete="off"
+  >
+  <div class="autocomplete-results"></div>
+</div>
+    <div class="field">
+      <label>Place</label>
+      <input type="number" name="__PLACE__" min="1">
+    </div>
+
+    <div class="field">
+      <label>Turn Order</label>
+      <input type="number" name="__TURN__" min="1">
+    </div>
+
+    <button type="button" class="btn btn-remove remove-player">
+      Remove Player
+    </button>
+
+  </details>
+</template>
+
+<datalist id="precon-decks">
+  {% for deck in g.precon_list %}
+    <option value="{{ deck }}"></option>
+  {% endfor %}
+</datalist>
+<datalist id="names-list">
+  {% for name in g.name_list %}
+    <option value="{{ name }}"></option>
+  {% endfor %}
+</datalist>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const PRECON_DATA = {{ precon_autocomplete | default([]) | tojson }};
+  const COMMANDERS   = {{ commander_list   | default([]) | tojson }};
+</script>
+
+
+
+<script src="{{ url_for('static', filename='submit.js') }}"></script>
+{% endblock %}

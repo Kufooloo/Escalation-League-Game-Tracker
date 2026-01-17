@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block header %}
+  <h1>{% block title %}Home Page{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<h1>All Games</h1>
+
+{% for game in game_data %}
+<div class="game">
+    <h2>Round {{ game.round }} — {{ game.date.strftime("%Y-%m-%d") }}</h2>
+    <table class="game-table">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th>Player</th>
+                <th>Deck</th>
+                <th>Commander</th>
+                <th>Turn Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in game.players %}
+            <tr>
+                <td>{{ player.place }}</td>
+                <td>{{ player.player_name }}</td>
+                <td>{{ player.deck_name }}</td>
+                <td>{{ player.commander_name }}</td>
+                <td>{{ player.turn_order }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No games played yet.</p>
+{% endfor %}
+{% endblock %}
