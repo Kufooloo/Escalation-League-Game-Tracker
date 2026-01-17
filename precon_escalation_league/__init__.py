@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from . import db, precon_league
+from config import PASSWORD
 
 
 def create_app(test_config=None):
@@ -12,7 +13,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'precon-league.sqlite'),
         MYSQL_HOST = "167.172.207.241",
         MYSQL_USER = "db.py",
-        MYSQL_PASSWORD = "p82]L76Y4S$?",
+        MYSQL_PASSWORD = PASSWORD,
         MYSQL_DATABASE = "Precon Escalation League",
     )
 
