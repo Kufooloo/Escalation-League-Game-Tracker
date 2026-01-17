@@ -1,12 +1,19 @@
 .field {
-  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-
-.field label {
-  display: block;
-  font-weight: 600;
+.field input,
+.field select,
+.field textarea,
+.autocomplete input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 6px;
 }
-
 
 fieldset {
   margin-bottom: 1rem;
@@ -79,7 +86,6 @@ button[type="submit"] {
 }
 
 .btn-add::before {
-  content: "+";
   font-size: 1.2em;
   line-height: 1;
 }
@@ -89,6 +95,7 @@ input {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  
 }
 
 
@@ -119,6 +126,7 @@ ul li a:hover {
 .btn-remove {
   background-color: #f44336;
   margin:auto;
+  margin-top: 5px;
   display:block;
 }
 
@@ -130,6 +138,7 @@ ul li a:hover {
 
 .autocomplete {
   position: relative;
+  font-weight: bold;
 }
 
 .autocomplete-results {
@@ -183,4 +192,19 @@ ul li a:hover {
   z-index: 100;
 }
 
+@media (max-width: 600px) {
+  .navbar-inner {
+    max-width: none;
+  }
+
+  .game-info {
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .game-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
