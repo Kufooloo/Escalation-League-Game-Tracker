@@ -26,15 +26,20 @@
     required
   >    </label>
   </fieldset>
-
+<div class="page-content">
   <!-- Players -->
   <section id="players"></section>
+</div>
 
-<button type="button" id="add-player" class="btn btn-add">
-  Add Player
-</button>
-  <button type="submit">Submit</button>
+<div class="action-bar">
+  <button type="button" id="add-player" class="btn btn-add">
+    ➕ Add Player
+  </button>
 
+  <button type="submit" class="btn btn-submit">
+    Submit Game
+  </button>
+</div>
 </form>
 
 <!-- Player template -->
@@ -46,15 +51,16 @@
   </summary>
 
 
-    <div class="field">
-      <label>Name</label>
-      <input 
-        type="text" 
-        name="__NAME__" required
-        list="names-list"
-        autocomplete="off"
-      >
-    </div>
+  <div class="autocomplete">
+    <label>Name</label>
+    <input
+      type="text"
+      name="__NAME__"
+      class="name-input"
+      autocomplete="off"
+    >
+    <div class="autocomplete-results"></div>
+  </div>
 
 <div class="autocomplete">
   <label>Deck</label>
@@ -94,23 +100,13 @@
   </details>
 </template>
 
-<datalist id="precon-decks">
-  {% for deck in g.precon_list %}
-    <option value="{{ deck }}"></option>
-  {% endfor %}
-</datalist>
-<datalist id="names-list">
-  {% for name in g.name_list %}
-    <option value="{{ name }}"></option>
-  {% endfor %}
-</datalist>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
   const PRECON_DATA = {{ precon_autocomplete | default([]) | tojson }};
   const COMMANDERS   = {{ commander_list   | default([]) | tojson }};
+  const NAMES        = {{ name_list       | default([]) | tojson }};
 </script>
 
 

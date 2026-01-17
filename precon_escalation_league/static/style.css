@@ -7,13 +7,27 @@
   font-weight: 600;
 }
 
-.field input {
-  width: 100%;
-}
 
 fieldset {
   margin-bottom: 1rem;
   margin-trim: 5%;
+}
+.page-content {
+  max-width: 900px;     
+  margin: 0 auto;       
+  padding: 16px;
+}
+
+.navbar {
+  width: 100%;
+  background: #222;
+  color: white;
+}
+
+.navbar-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 12px 16px;
 }
 
 .player {
@@ -121,7 +135,6 @@ ul li a:hover {
 .autocomplete-results {
   position: absolute;
   background: white;
-  border: 1px solid #ccc;
   width: 100%;
   z-index: 100;
 }
@@ -156,3 +169,18 @@ ul li a:hover {
     background-color: #f4f4f4;
     text-align: left;
 }
+
+.action-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+
+  padding: 12px;
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  z-index: 100;
+}
+
+

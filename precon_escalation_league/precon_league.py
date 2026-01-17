@@ -90,5 +90,5 @@ def submit():
         post_game(players, date, round_num)
 
     today = dt.today().isoformat()
-    return render_template("precon-league/submit.html", today=today, precon_autocomplete=g.precon_autocomplete, commander_list=g.commander_list)
+    return render_template("precon-league/submit.html", today=today, precon_autocomplete=g.precon_autocomplete, commander_list=g.commander_list, name_list=g.name_list)
         

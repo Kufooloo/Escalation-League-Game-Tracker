@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupAutocomplete(clone.querySelector(".deck-input"), PRECON_DATA, item => `${item.deck_name} — ${item.commander_name || ""}`);
     setupAutocomplete(clone.querySelector(".commander-input"), COMMANDERS, item => item); 
+    setupAutocomplete(clone.querySelector(".name-input"), NAMES, item => item);
 
     playersContainer.appendChild(clone);
   }
