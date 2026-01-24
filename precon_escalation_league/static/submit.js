@@ -2,6 +2,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const playersContainer = document.getElementById("players");
   const addBtn = document.getElementById("add-player");
   const template = document.getElementById("player-template");
+  const form = document.querySelector("form");
+  
+  if (!form) {
+    console.error("Form not found");
+    return;
+  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(form.action || window.location.pathname, {
+      method: "POST",
+      body: new FormData(form)
+    });
+
+    let result;
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      result = await response.json();
+    } else {
+      const text = await response.text();
+      console.error("Server returned non-JSON:", text);
+      showError("Unexpected server error.");
+      return;
+    }
+
+    if (!response.ok || !result.ok) {
+      showError(result.error || "Submission failed.");
+    } else {
+      showSuccess?.();
+      form.reset();
+    }
+  });
 
   function renumberPlayers() {
     [...playersContainer.children].forEach((player, index) => {
@@ -130,4 +163,14 @@ function setupAutocomplete(input, data, formatItem) {
     }
   });
 
+}
+
+
+function showError(message) {
+  document.getElementById("error-message").textContent = message;
+  document.getElementById("error-modal").classList.remove("hidden");
+}
+
+function closeError() {
+  document.getElementById("error-modal").classList.add("hidden");
 }

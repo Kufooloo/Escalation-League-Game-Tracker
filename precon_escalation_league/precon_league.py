@@ -2,7 +2,7 @@ import functools
 
 from datetime import date as dt
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
 
 
@@ -72,22 +72,38 @@ def frontpage():
 @bp.route("/submit", methods=["GET", "POST"])
 def submit():
     if request.method == "POST":
-        round_num = request.form["round"]
-        date = request.form["date"]
+        try:
+            round_num = request.form["round"]
+            if not round_num.isdigit() or int(round_num) < 1:
+                return jsonify({
+                    "ok": False,
+                    "error": "Round number is required."
+                }), 400
+            
+            date = request.form["date"]
+            if not date:
+                return jsonify({
+                    "ok": False,
+                    "error": "Date is required."
+                }), 400
+            players = []
+            i = 0
+            while f"players[{i}][name]" in request.form:
+                players.append({
+                    "name": request.form[f"players[{i}][name]"],
+                    "deck": request.form.get(f"players[{i}][deck]"),
+                    "commander": request.form.get(f"players[{i}][commander]"),
+                    "place": request.form.get(f"players[{i}][place]"),
+                    "turn_order": request.form.get(f"players[{i}][turn_order]"),
+                })
+                i += 1
 
-        players = []
-        i = 0
-        while f"players[{i}][name]" in request.form:
-            players.append({
-                "name": request.form[f"players[{i}][name]"],
-                "deck": request.form.get(f"players[{i}][deck]"),
-                "commander": request.form.get(f"players[{i}][commander]"),
-                "place": request.form.get(f"players[{i}][place]"),
-                "turn_order": request.form.get(f"players[{i}][turn_order]"),
-            })
-            i += 1
-
-        post_game(players, date, round_num)
+            post_game(players, date, round_num)
+        except Exception as e:
+            return jsonify({
+                "ok": False,
+                "error": str(e)
+            }), 400
 
     today = dt.today().isoformat()
     return render_template("precon-league/submit.html", today=today, precon_autocomplete=g.precon_autocomplete, commander_list=g.commander_list, name_list=g.name_list)

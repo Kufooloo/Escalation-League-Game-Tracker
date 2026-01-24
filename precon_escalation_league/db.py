@@ -2,7 +2,7 @@ import mysql.connector
 from datetime import datetime
 import os, zipfile, json
 import click
-from flask import current_app, g
+from flask import current_app, g, jsonify
 import json
 from tqdm import tqdm
 import csv
@@ -237,7 +237,7 @@ def init_app(app):
 def post_game(data: list, date: datetime, round_num: int):
     db = get_db()
     cursor = db.cursor()
-
+    
     cursor.execute(
         'INSERT INTO games (date_played, round) VALUES (%s, %s)',
         (date, round_num)
@@ -264,24 +264,53 @@ def post_player_in_game(cursor, game_id: int, player_name: str, commander_name: 
     commander_id = get_commander(commander_name) if commander_name else None
     deck_id = get_deck(deck_name.split("—")[0].strip()) if deck_name else None
 
-    if commander_id is None and commander_name is not None:
-        raise ValueError(f"Commander '{commander_name}' not found in database.")
-    if deck_id is None and deck_name is not None:
-        raise ValueError(f"Deck '{deck_name}' not found in database.")
-    print(turn_order)
+    if not commander_name:
+        return jsonify(
+            ok=False,
+            error="Commander name cannot be empty."
+        ), 400
+    if not commander_id :
+        return jsonify(
+            ok=False,
+            error=f"Commander '{commander_name}' not found."
+        ), 400
+    
+    if deck_id is None:
+        return jsonify(
+            ok=False,
+            error=f"Deck '{deck_name}' not found."
+        ), 400
+    
+    if deck_name is None:
+        return jsonify(
+            ok=False,
+            error="Deck name cannot be empty."
+        ), 400
+
 
     
     if turn_order is not None and turn_order != '':
-        print("turn order provided")
-        cursor.execute(
-            'INSERT INTO places (game_id, player_id, commander, deck_used, place, turn_order) VALUES (%s, %s, %s, %s, %s, %s)',
-            (game_id, player_id, commander_id, deck_id, place, turn_order)
-        )
+        try:
+            cursor.execute(
+                'INSERT INTO places (game_id, player_id, commander, deck_used, place, turn_order) VALUES (%s, %s, %s, %s, %s, %s)',
+                (game_id, player_id, commander_id, deck_id, place, turn_order)
+            )
+        except mysql.connector.Error as err:
+            return jsonify(
+                ok=False,
+                error=f"Database error: {err}"
+            ), 500
     else:
-        cursor.execute(
-            'INSERT INTO places (game_id, player_id, commander, deck_used, place) VALUES (%s, %s, %s, %s, %s)',
-            (game_id, player_id, commander_id, deck_id, place)
-        )
+        try:
+            cursor.execute(
+                'INSERT INTO places (game_id, player_id, commander, deck_used, place) VALUES (%s, %s, %s, %s, %s)',
+                (game_id, player_id, commander_id, deck_id, place)
+            )
+        except mysql.connector.Error as err:
+            return jsonify(
+                ok=False,
+                error=f"Database error: {err}"
+            ), 500
 
 def get_player(name: str):
     db = get_db()

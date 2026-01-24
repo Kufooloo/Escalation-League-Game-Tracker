@@ -100,6 +100,14 @@
   </details>
 </template>
 
+<div id="error-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Submission Error</h3>
+    <p id="error-message"></p>
+    <button onclick="closeError()">OK</button>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
