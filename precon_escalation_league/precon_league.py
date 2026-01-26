@@ -99,6 +99,10 @@ def submit():
                 i += 1
 
             post_game(players, date, round_num)
+            return jsonify({
+                "ok": True,
+                "message": "Game submitted successfully."
+            }), 200
         except Exception as e:
             return jsonify({
                 "ok": False,

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!response.ok || !result.ok) {
       showError(result.error || "Submission failed.");
     } else {
-      showSuccess?.();
+      showSuccess("Game submitted successfully.");
       form.reset();
     }
   });
@@ -173,4 +173,14 @@ function showError(message) {
 
 function closeError() {
   document.getElementById("error-modal").classList.add("hidden");
+}
+
+
+function showSuccess(message) {
+  document.getElementById("success-message").textContent = message;
+  document.getElementById("success-modal").classList.remove("hidden");
+}
+
+function closeSuccess() {
+  document.getElementById("success-modal").classList.add("hidden");
 }
